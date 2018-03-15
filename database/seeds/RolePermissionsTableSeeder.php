@@ -12,6 +12,11 @@ class RolePermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+
+
+
+
+
         DB::table('role_permissions')->insert([
             'role_id' => '1',
             'permission_id' => '1',

@@ -1,4 +1,4 @@
-<div class="form-group {{ $errors->has($name) ? ' has-error' : '' }}">
+<div class="form-group {{ $errors->has($name) ? ' has-error' : '' }}  {{ isset($class) ? $class : null }}">
     <label for="input-{{$name}}">{{ $label }}</label>
 
     <select multiple class="form-control" name="{{$name}}[]" id="input-{{$name}}">

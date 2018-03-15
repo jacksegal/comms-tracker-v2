@@ -1,23 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.model')
 
-@section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Edit User</div>
+@section('model-content')
 
-                    <div class="panel-body">
+    @include('user._form', [
+        'route' => '/users/'.$user->id,
+        'buttonLabel' => 'Update User',
+        'displayActive' => true,
+    ])
 
-                        @include('user._form', [
-                            'route' => '/user/'.$user->id,
-                            'buttonLabel' => 'Update User',
-                            'displayActive' => true,
-                        ])
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection

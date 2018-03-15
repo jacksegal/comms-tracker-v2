@@ -18,7 +18,7 @@
             'value' => 'label',
         ],
         'selected' => [
-            'collection' => isset($role) ? $role->permissions : false,
+            'collection' => isset($role) && $role ? $role->permissions : false,
             'key' => 'id',
             'value' => 'id',
         ],

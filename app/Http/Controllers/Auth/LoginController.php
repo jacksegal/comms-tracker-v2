@@ -67,7 +67,9 @@ class LoginController extends Controller
             Auth::login($user);
             return redirect()->intended('home');
         } else {
-            print_r('no match!');
+            return redirect('login')
+                ->withInput()
+                ->withErrors(array('message' => 'Google oAuth failed - please check there is an active user with that email'));
         }
     }
 }

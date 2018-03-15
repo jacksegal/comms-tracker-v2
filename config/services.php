@@ -38,7 +38,7 @@ return [
     'google' => [
         'client_id' => '466991356726-7o8iot5uu9jhfj993kf0g4g44ele8k9u.apps.googleusercontent.com',
         'client_secret' => 'stvLd_AwbIHOyTPlBI8OMV3d',
-        'redirect' => 'http://gerty.app/login/google/callback',
+        'redirect' => 'http://tracker.localhost.greenpeace.io/login/google/callback',
     ],
 
 ];

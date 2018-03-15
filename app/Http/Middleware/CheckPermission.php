@@ -18,7 +18,7 @@ class CheckPermission
         if (auth()->check() && auth()->user()->hasPermission($permission)) {
             return $next($request);
         } else {
-            return redirect('home');
+            return redirect('login');
         }
     }
 }

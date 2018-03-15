@@ -16,7 +16,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('role/index', ['roles' => $roles]);
+        return view('role/index', ['roles' => $roles, 'title' => 'Roles']);
     }
 
     /**
@@ -27,7 +27,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::all();
-        return view('role/create', ['permissions' => $permissions]);
+        return view('role/create', ['role' => '', 'permissions' => $permissions, 'title' => 'Create Role']);
     }
 
     /**
@@ -72,7 +72,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $permissions = Permission::all();
-        return view('role/edit', ['role' => $role, 'permissions' => $permissions]);
+        return view('role/edit', ['role' => $role, 'permissions' => $permissions, 'title' => 'Edit Role']);
     }
 
     /**

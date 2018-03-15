@@ -8,6 +8,9 @@
                     <div class="panel-heading">Login</div>
 
                     <div class="panel-body">
+
+                        @include('components.message')
+
                         <a href="{{ url('/login/google') }}" role="button" class="btn btn-danger">
                             <i class="fa fa-google" aria-hidden="true" style="padding-right: 10px;"></i>
                             Login with Google

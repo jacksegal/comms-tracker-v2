@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://gerty.app'),
+    'url' => env('APP_URL', 'http://tracker.localhost.greenpeace.io'),
 
     /*
     |--------------------------------------------------------------------------

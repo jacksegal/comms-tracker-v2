@@ -3,12 +3,17 @@
 
     <select multiple class="form-control" name="{{$name}}[]" id="input-{{$name}}">
 
+
         @foreach($options['collection'] as $option)
-
-            <option {{ isset($selected['collection']) && $selected['collection'] && $selected['collection']->contains($selected['key'], $option->{$options['key']}) ? 'selected' : '' }} value="{{ $option->{$options['key']} }}">
-                {{ $option->{$options['value']} }}
-            </option>
-
+            @if(old($name) && in_array($option->{$options['key']},old($name)))
+                <option selected value="{{ $option->{$options['key']} }}">
+                    {{ $option->{$options['value']} }}
+                </option>
+            @else
+                <option {{ isset($selected['collection']) && $selected['collection'] && $selected['collection']->contains($selected['key'], $option->{$options['key']}) ? 'selected' : '' }} value="{{ $option->{$options['key']} }}">
+                    {{ $option->{$options['value']} }}
+                </option>
+            @endif
         @endforeach
 
     </select>

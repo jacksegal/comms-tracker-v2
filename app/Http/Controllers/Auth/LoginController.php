@@ -65,6 +65,8 @@ class LoginController extends Controller
         if ($user) {
             // Authentication passed...
             Auth::login($user);
+            $user->last_login = new \DateTime;
+            $user->save();
             return redirect()->intended('home');
         } else {
             return redirect('login')

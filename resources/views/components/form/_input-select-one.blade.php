@@ -7,9 +7,16 @@
             @if(isset($selected['placeholder']))
                 <option></option>
             @endif
-            <option {{ isset($selected['collection']) && $selected['collection'] && $selected['collection']->{$selected['key']} === $option->{$selected['value']} ? 'selected' : '' }} value="{{ $option->{$options['key']} }}">
-                {{ $option->{$options['value']} }}
-            </option>
+
+            @if(old($name, 'default') == $option->{$options['key']})
+                <option selected data-test="true" value="{{ $option->{$options['key']} }}">
+                    {{ $option->{$options['value']} }}
+                </option>
+            @else
+                <option {{ isset($selected['collection']) && $selected['collection'] && $selected['collection']->{$selected['key']} === $option->{$selected['value']} ? 'selected' : '' }} value="{{ $option->{$options['key']} }}">
+                    {{ $option->{$options['value']} }}
+                </option>            
+            @endif
 
         @endforeach
 

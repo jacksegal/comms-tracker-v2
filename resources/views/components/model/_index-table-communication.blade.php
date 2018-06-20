@@ -25,16 +25,21 @@
 
                 @endforeach
                 <td>
-                    <a href="/{{ $model }}s/{{$row->id}}">
+                    <a class="aux-button" href="/{{ $model }}s/{{$row->id}}">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                     </a>
-                    <a href="/{{ $model }}s/{{$row->id}}/edit">
+                    <a class="aux-button" href="/{{ $model }}s/{{$row->id}}/edit">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </a>
-                    <a href="/{{ $model }}s/{{$row->id}}/clone">
+                    <a class="aux-button" href="/{{ $model }}s/{{$row->id}}/clone">
                         <i class="fa fa-files-o" aria-hidden="true"></i>
                     </a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    <a class="aux-button" class="comms-delete">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </a>
+                    <form style="display: none;" id="form-comms-delete" method="POST" action="/{{ $model }}s/{{$row->id}}/delete">
+                        {{ csrf_field() }}
+                    </form>
                 </td>
             </tr>
         @endforeach
@@ -60,5 +65,11 @@
                 ]
             });
         });
+
+        $( ".comms-delete" ).click(function() {
+            $( "#form-comms-delete" ).submit();
+        });
+
+
     </script>
 @endsection

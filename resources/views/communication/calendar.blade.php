@@ -43,14 +43,14 @@
                 center: 'title', // current view title
                 right: 'Filters year,month,week,day' // buttons for switching between views
             },
-            customButtons: {
+            /*customButtons: {
                 Filters: {
                     text: 'Filters',
                     click: function () {
                         return false;
                     }
                 }
-            },
+            },*/
             views: {
                 year: {
                     yearColumns: 3

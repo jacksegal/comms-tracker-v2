@@ -80,6 +80,19 @@
             $(ident).val(e.format('yyyy-mm-dd'));
         });
 
+
+        $('.datepicker').datepicker().on('changeDate', function (e) {
+            var startDateCompare = $('#input-start_date').datepicker('getUTCDate');
+            var endDateCompare = $('#input-end_date').datepicker('getUTCDate');
+
+            if(startDateCompare && endDateCompare && !moment(startDateCompare).isSameOrBefore(endDateCompare)){
+            
+                $(e.currentTarget).datepicker('clearDates');
+                //$(e.currentTarget).closest('.form-group').addClass('has-error').append('<span class="help-block">Start date must be BEFORE End date</span>');
+            }
+        });
+
+
         $('.clear-date').click(function(e){
             var input = $(this).attr('data-date-input');
             var ident = 'input[name="' + input + '"]';
@@ -103,6 +116,7 @@
                 'label' => 'Title',
                 'model' => $communication,
                 'type' => 'text',
+                'required' => 'required',
             ])
 
             {{-- Medium --}}
@@ -243,7 +257,7 @@
             {{-- Approx Recipients --}}
             @include('components.form._input-text', [
                'name' => 'approx_recipients',
-               'label' => 'approx_recipients',
+               'label' => 'Approx. Recipients',
                'model' => $communication,
                'type' => 'number',
             ])
@@ -262,6 +276,7 @@
                     'collection' => isset($communication) ? $communication : false,
                     'key' => 'ask_id',
                     'value' => 'id',
+                    'placeholder' => 'Select an Ask',
                 ],
                 'class' => 'email-only',
             ])
@@ -279,7 +294,7 @@
             {{-- Data Selection --}}
             <div class="checkbox">
                 <label>
-                    <input type="checkbox"
+                    <input value="1" type="checkbox"
                            name="data_selection" {{ isset($communication) && $communication && ($communication->data_selection === 1) ? 'checked' : '' }}>
                     Data
                     selection

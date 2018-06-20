@@ -26,7 +26,7 @@
                 @endforeach
                 <td>
                     <i class="fa fa-eye" aria-hidden="true"></i>
-                    <a href="/{{ $model }}s/{{$row->id}}/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="aux-button" href="/{{ $model }}s/{{$row->id}}/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </td>
             </tr>

@@ -10,6 +10,9 @@ use App\Audience;
 use App\Medium;
 use App\User;
 use Illuminate\Http\Request;
+use Session;
+use Mailgun\Mailgun;
+
 
 class CommunicationController extends Controller
 {
@@ -21,7 +24,7 @@ class CommunicationController extends Controller
     public function index()
     {
 
-        $communications = Communication::all();
+        $communications = Communication::where('active', 1)->get();
 
         return view('communication/index', ['communications' => $communications, 'title' => 'Communications']);
     }
@@ -34,7 +37,7 @@ class CommunicationController extends Controller
     public function calendar()
     {
 
-        $communications = Communication::all();
+        $communications = Communication::where('active', 1)->get();
         return view('communication/calendar', ['communications' => $communications]);
     }
 
@@ -91,7 +94,9 @@ class CommunicationController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+
+        /* core validation rules for all medium */
+        $validationRules = [
             'title' => 'required|unique:communications|max:255',
             'description' => 'required',
             'basket' => 'required',
@@ -100,8 +105,15 @@ class CommunicationController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'user_id' => 'required',
-            'audiences' => 'required',
-        ]);
+        ];
+
+        /* additional validation rules for email */
+        if($request->medium_id == '1') {
+            $validationRules['audiences'] = 'required';
+        }
+
+        $request->validate($validationRules);
+
 
         $communication = new Communication();
 
@@ -136,16 +148,42 @@ class CommunicationController extends Controller
 
         $communication->save();
 
+//        if($communication->data_selection == 1){
+            // send email
+            $mgApi = env('MAILGUN_API', 'forge');
+            $mgDomain = env('MAILGUN_DOMAIN', 'forge');
+
+            /* Instantiate the client. */
+            $mgClient = new Mailgun($mgApi);
+            /* Make the call to the client. */
+            $mgClient->sendMessage($mgDomain, array(
+                'from' => "Comms Tracker <mailgun@$mgDomain>",
+                'to' => env('DATA_EMAIL','jsegal@greenpeace.org'),
+                'subject' => 'New Comms requires Data Selection',
+                'html' => $this->createDataEmail($communication),
+            ));      
+//        }  
+
         $trello = new \App\ServicesComms\Trello();
         $html = $this->createTrelloDescription($communication);
         $res = $trello->createCard($communication->basket->label . ' - ' . $communication->title, $html, $communication->start_date);
 
-        $trelloCard = new \App\TrelloCard(['card_id' => $res->id]);
-        $trelloCard->save();
-        $communication->trello_card_id = $trelloCard->id;
-        $communication->save();
+        if($res['code'] == 200) {
 
-        return redirect()->action('CommunicationController@index');
+            $trelloCard = new \App\TrelloCard(['card_id' => $res['body']->id]);
+            $trelloResponse = $trelloCard->save();
+
+            $communication->trello_card_id = $trelloCard->id;
+            $communication->save();
+
+            return redirect()->action('CommunicationController@index');    
+        } else {
+
+            $errorMsg = 'There was an error adding the card to Trello: ' . $res['body'];
+            return redirect()->action('CommunicationController@index')->withErrors($errorMsg);
+        }
+
+        
     }
 
     /**
@@ -170,7 +208,7 @@ class CommunicationController extends Controller
             ['key' => 'Approx. Recipients','value' => $communication->approx_recipients],
             ['key' => 'Notes','value' => $communication->notes],
             ['key' => 'BSD Tag','value' => $communication->bsd_tag],
-            ['key' => 'User Id','value' => $communication->user_id],
+            ['key' => 'Created By','value' => $communication->user->email],
             ['key' => 'Created Date','value' => $communication->created_at],
             ['key' => 'Updated Date','value' => $communication->updated_at],
         ];
@@ -336,8 +374,16 @@ class CommunicationController extends Controller
             $html = $this->createTrelloDescription($communication);
             $res = $trello->updateCard($communication->trelloCard->card_id, $communication->basket->label . ' - ' . $communication->title, $html, $communication->start_date);
 
-        }
+            if($res['code'] == 200) {
 
+                return redirect()->action('CommunicationController@index');
+
+            } else {
+
+                $errorMsg = 'There was an error updating Trello: ' . $res['body'];
+                return redirect()->action('CommunicationController@index')->withErrors($errorMsg);
+            }
+        }
         return redirect()->action('CommunicationController@index');
     }
 
@@ -349,12 +395,47 @@ class CommunicationController extends Controller
      */
     public function destroy(Communication $communication)
     {
-        //
+        $communication->active = 0;
+        $communication->save();
+
+        $trello = new \App\ServicesComms\Trello();
+        $trelloResponse = $trello->archiveCard($communication->trelloCard->card_id);
+
+        if($trelloResponse['code'] == 200){
+            return redirect()->action('CommunicationController@index');
+        } else { 
+            $errorMsg = 'There was an error updating Trello: ' . $trelloResponse['body'];
+            return redirect()->action('CommunicationController@index')->withErrors($errorMsg);
+        }
+
+        
+    }
+
+    public function trello(Request $request)
+    {
+
+        return 'hello world';
     }
 
     private function createTrelloDescription($communication)
     {
         return view('trello', [
+            'email' => $communication->user->email,
+            'ask' => $communication->ask->label,
+            'audience' => 'xxx',
+            'recipients' => $communication->approx_recipients,
+            'flexibility' => $communication->date_flexibility,
+            'note' => $communication->note,
+            'tag' => $communication->bsd_tag,
+            'url' => env('APP_URL') . '/communications/' . $communication->id,
+            'created' => $communication->created_at,
+            'updated' => $communication->updated_at,
+        ])->render();
+    }
+
+    private function createDataEmail($communication)
+    {
+        return view('email', [
             'email' => $communication->user->email,
             'ask' => $communication->ask->label,
             'audience' => 'xxx',

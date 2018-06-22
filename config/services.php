@@ -36,9 +36,9 @@ return [
     ],
 
     'google' => [
-        'client_id' => '466991356726-7o8iot5uu9jhfj993kf0g4g44ele8k9u.apps.googleusercontent.com',
-        'client_secret' => 'stvLd_AwbIHOyTPlBI8OMV3d',
-        'redirect' => 'http://tracker.localhost.greenpeace.io/login/google/callback',
+        'client_id' => env('GOOGLE_OAUTH_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_OAUTH_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_OAUTH_REDIRECT'),
     ],
 
 ];

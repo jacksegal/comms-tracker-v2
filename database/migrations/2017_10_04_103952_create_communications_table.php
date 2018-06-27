@@ -30,7 +30,7 @@ class CreateCommunicationsTable extends Migration
             $table->date('end_date')->nullable();
             $table->string('date_flexibility')->nullable();
 
-            $table->integer('approx_recipients')->nullable();
+            $table->string('approx_recipients')->nullable();
             $table->integer('data_selection')->nullable();
             $table->text('notes')->nullable();
 

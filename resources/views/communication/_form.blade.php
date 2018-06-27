@@ -262,7 +262,7 @@
                'name' => 'approx_recipients',
                'label' => 'Approx. Recipients',
                'model' => $communication,
-               'type' => 'number',
+               'type' => 'text',
             ])
 
 

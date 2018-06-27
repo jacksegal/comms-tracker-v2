@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Communication;
 use App\Basket;
 use App\Area;
+use App\SubArea;
 use App\Ask;
 use App\Audience;
 use App\Medium;
@@ -56,8 +57,11 @@ class CommunicationController extends Controller
             $q->orderBy('label', 'asc');
         }])->get();
 
-        $initialAreas = $baskets->first()->areas->sortBy('label');
-        $initialsubAreas = $initialAreas->first()->subAreas->sortBy('label');
+        $initialAreas = Area::all();
+        $initialsubAreas = SubArea::all();
+
+        //$initialAreas = $baskets->first()->areas->sortBy('label');
+        //$initialsubAreas = $initialAreas->first()->subAreas->sortBy('label');
 
         $areasByBasket = $baskets->groupBy('label');
         $subAreasByArea = $areas->groupBy('label');
@@ -114,7 +118,6 @@ class CommunicationController extends Controller
 
         $request->validate($validationRules);
 
-
         $communication = new Communication();
 
         $communication->title = $request->title;
@@ -141,14 +144,31 @@ class CommunicationController extends Controller
 
         $communication->audiences()->sync($request->audiences);
 
-        $communication->bsd_tag = "{$communication->basket->label},{$communication->area->label},{$communication->subArea->label},{$communication->ask->label}";
+        $bsdTag = [
+            'basket' => isset($communication->basket->tag) ? $communication->basket->tag : $communication->basket->label,
+            'area' => isset($communication->area->tag) ? $communication->area->tag : $communication->area->label,
+            'subArea' => isset($communication->subArea->tag) ? $communication->subArea->tag : $communication->subArea->label,
+            'ask' => isset($communication->ask->tag) ? $communication->ask->tag : $communication->ask->label,
+        ];
+
         foreach ($communication->audiences as $audience) {
-            $communication->bsd_tag .= ',' . $audience->label;
+            if(isset($audience->tag)){
+                $bsdTag['audience'][] = $audience->tag;
+            } else {
+                $bsdTag['audience'][] = $audience->label;
+            }
+        }
+
+
+        $communication->bsd_tag = "{$bsdTag['basket']},{$bsdTag['area']},{$bsdTag['subArea']},{$bsdTag['ask']}";
+
+        foreach ($bsdTag['audience'] as $audience) {
+            $communication->bsd_tag .= ',' . $audience;
         }
 
         $communication->save();
 
-//        if($communication->data_selection == 1){
+        if($communication->data_selection == 1){
             // send email
             $mgApi = env('MAILGUN_API', 'forge');
             $mgDomain = env('MAILGUN_DOMAIN', 'forge');
@@ -162,7 +182,7 @@ class CommunicationController extends Controller
                 'subject' => 'New Comms requires Data Selection',
                 'html' => $this->createDataEmail($communication),
             ));      
-//        }  
+        }  
 
         $trello = new \App\ServicesComms\Trello();
         $html = $this->createTrelloDescription($communication);
@@ -326,7 +346,7 @@ class CommunicationController extends Controller
      */
     public function update(Request $request, Communication $communication)
     {
-        $request->validate([
+        $validationRules = [
             'title' => 'required|unique:communications,title,' . $communication->id . '|max:255',
             'description' => 'required',
             'basket' => 'required',
@@ -335,8 +355,14 @@ class CommunicationController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'user_id' => 'required',
-            'audiences' => 'required',
-        ]);
+        ];
+
+        /* additional validation rules for email */
+        if($request->medium_id == '1') {
+            $validationRules['audiences'] = 'required';
+        }
+
+        $request->validate($validationRules);
 
         $communication->title = $request->title;
         $communication->description = $request->description;
@@ -362,10 +388,31 @@ class CommunicationController extends Controller
 
         $communication->audiences()->sync($request->audiences);
 
-        $communication->bsd_tag = "{$communication->basket->label},{$communication->area->label},{$communication->subArea->label},{$communication->ask->label}";
+        $bsdTag = [
+            'basket' => isset($communication->basket->tag) ? $communication->basket->tag : $communication->basket->label,
+            'area' => isset($communication->area->tag) ? $communication->area->tag : $communication->area->label,
+            'subArea' => isset($communication->subArea->tag) ? $communication->subArea->tag : $communication->subArea->label,
+            'ask' => isset($communication->ask->tag) ? $communication->ask->tag : $communication->ask->label,
+        ];
+
+        foreach ($communication->audiences as $audience) {
+            if(isset($audience->tag)){
+                $bsdTag['audience'][] = $audience->tag;
+            } else {
+                $bsdTag['audience'][] = $audience->label;
+            }
+        }
+
+        $communication->bsd_tag = "{$bsdTag['basket']},{$bsdTag['area']},{$bsdTag['subArea']},{$bsdTag['ask']}";
+
+        foreach ($bsdTag['audience'] as $audience) {
+            $communication->bsd_tag .= ',' . $audience;
+        }
+
+        /*$communication->bsd_tag = "{$communication->basket->label},{$communication->area->label},{$communication->subArea->label},{$communication->ask->label}";
         foreach ($communication->audiences as $audience) {
             $communication->bsd_tag .= ',' . $audience->label;
-        }
+        }*/
 
         $communication->save();
 

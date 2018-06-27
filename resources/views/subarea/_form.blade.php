@@ -2,6 +2,7 @@
 
     {{ csrf_field() }}
 
+    {{-- SubArea --}}
     @include('components.form._input-text', [
         'name' => 'label',
         'label' => 'Sub-Area',
@@ -9,6 +10,7 @@
         'type' => 'text',
     ])
 
+    {{-- Area --}}
     @include('components.form._input-select-one', [
         'name' => 'area',
         'label' => 'Area',
@@ -24,6 +26,15 @@
         ],
     ])
 
+    {{-- Tag --}}
+    @include('components.form._input-text', [
+        'name' => 'tag',
+        'label' => 'Tag',
+        'model' => $subArea,
+        'type' => 'text',
+    ])
+
+    {{-- Submit --}}
     @include('components.form._button_group', [
         'label' => $buttonLabel,
         'cancel' => '/subareas',

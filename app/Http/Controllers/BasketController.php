@@ -42,6 +42,7 @@ class BasketController extends Controller
 
         $basket = new Basket;
         $basket->label = $request->label;
+        $basket->tag = $request->tag;
         $basket->save();
 
         return redirect()->action('BasketController@index');
@@ -83,6 +84,7 @@ class BasketController extends Controller
         ]);
 
         $basket->label = $request->label;
+        $basket->tag = $request->tag;
         $basket->save();
 
         return redirect()->action('BasketController@index');

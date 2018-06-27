@@ -3,7 +3,7 @@
 @section('model-content')
 
     @include('components.model._index-table-communication', [
-        'label' => 'Communications',
+        'label' => 'Communication',
         'model' => 'communication',
         'columns' => [
             ['header' => 'Title','row' => 'title'],

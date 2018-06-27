@@ -39,6 +39,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
 
+
+    <style>
+        .navbar-static-top {
+            z-index: 9 !important;
+        }
+    </style>
+
 </head>
 <body>
 <div id="app">
@@ -75,6 +82,9 @@
                     <li><a href="{{ route('login') }}">Login</a></li>
 
                     @else
+                        @if(Auth::user()->hasPermission('manageCommunications'))
+                        <li><a href="/">Home</a></li>
+                        @endif
 
                         @if(Auth::user()->hasPermission('manageCommunications'))
                         <li><a href="/communications">Communications</a></li>

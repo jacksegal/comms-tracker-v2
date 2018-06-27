@@ -17,6 +17,7 @@ class CreateAreasTable extends Migration
             $table->increments('id');
             $table->string('label');
             $table->integer('basket_id');
+            $table->string('tag')->nullable();
             $table->integer('active')->default('1');
             $table->timestamps();
         });

@@ -48,6 +48,7 @@ class AreaController extends Controller
         $area = new Area;
         $area->label = $request->label;
         $area->basket_id = $request->basket;
+        $area->tag = $request->tag;
         $area->save();
 
 
@@ -94,6 +95,7 @@ class AreaController extends Controller
 
         $area->label = $request->label;
         $area->basket_id = $request->basket;
+        $area->tag = $request->tag;
 
         $area->save();
 

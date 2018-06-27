@@ -48,6 +48,7 @@ class SubAreaController extends Controller
         $subArea = new SubArea;
         $subArea->label = $request->label;
         $subArea->area_id = $request->area;
+        $subArea->tag = $request->tag;
         $subArea->save();
 
 
@@ -94,6 +95,7 @@ class SubAreaController extends Controller
 
         $subArea->label = $request->label;
         $subArea->area_id = $request->area;
+        $subArea->tag = $request->tag;
 
         $subArea->save();
 

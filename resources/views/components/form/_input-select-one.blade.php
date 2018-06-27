@@ -29,7 +29,6 @@
     @endif
 </div>
 
-
 @if(isset($selected['placeholder']))
     <script>
         $(document).ready(function () {

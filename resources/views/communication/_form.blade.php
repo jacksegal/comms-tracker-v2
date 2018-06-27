@@ -5,6 +5,9 @@
         var areasByBasket = {!! $areasByBasket !!};
         var subAreasByArea = {!! $subAreasByArea !!};
 
+        console.log('areasByBasket', areasByBasket);
+        console.log('subAreasByArea', subAreasByArea);
+
         /* listen to basket select change */
         $('select[name="basket"]').change(function () {
             var selected = getSelectedOption(this);
@@ -157,7 +160,7 @@
 
             {{-- Date Flexibility --}}
             <div class="form-group {{ $errors->has('date_flexibility') ? ' has-error' : '' }}">
-                <label for="input-date_flexibility">date_flexibility</label>
+                <label for="input-date_flexibility">Date Flexibility</label>
                 <select class="form-control" name="date_flexibility" id="input-date_flexibility">
                     <option {{ (isset($communication->date_flexibility) && $communication->date_flexibility == 'Very flexible') ? 'selected' : '' }} value="Very flexible">
                         Very flexible
@@ -319,8 +322,9 @@
                     'value' => 'email',
                 ],
                 'selected' => [
-                    'collection' => isset($communication) ? $communication : false,
-                    'key' => 'user_id',
+                    'collection' => ($communication) ? $communication : Auth::user(),
+                    //'key' => 'user_id',
+                    'key' => ($communication) ? 'user_id' : 'id',
                     'value' => 'id',
                 ],
             ])

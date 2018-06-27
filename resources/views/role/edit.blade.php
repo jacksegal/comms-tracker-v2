@@ -4,7 +4,7 @@
 
     @include('role._form', [
         'route' => '/roles/'.$role->id,
-        'buttonLabel' => 'Edit Role',
+        'buttonLabel' => 'Update Role',
     ])
 
 @endsection

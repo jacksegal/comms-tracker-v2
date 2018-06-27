@@ -3,6 +3,11 @@
 
 ---
 
+**Description**
+{{ $description }}
+
+---
+
 **What does the email ask people to do?**
 {{ $ask }}
 

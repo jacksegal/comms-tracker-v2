@@ -466,10 +466,22 @@ class CommunicationController extends Controller
 
     private function createTrelloDescription($communication)
     {
+        $i = 2;
+
+        foreach ($communication->audiences as $audience) {
+            if($i === 2){
+                $audiences = $audience->label;
+                $i++;
+            } else {
+                $audiences .= ', ' . $audience->label;
+            }    
+        }
+
         return view('trello', [
             'email' => $communication->user->email,
+            'description' => $communication->description,
             'ask' => $communication->ask->label,
-            'audience' => 'xxx',
+            'audience' => $audiences,
             'recipients' => $communication->approx_recipients,
             'flexibility' => $communication->date_flexibility,
             'note' => $communication->note,

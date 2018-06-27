@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'email' => 'mbooks@greenpeace.org',
+            'email' => 'mbrooks@greenpeace.org',
             'role_id' => '1',
             'active' => '1',
             'remember_token' => str_random(10),

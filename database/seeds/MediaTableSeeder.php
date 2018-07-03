@@ -72,11 +72,11 @@ class MediaTableSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
-        DB::table('media')->insert([
+        /*DB::table('media')->insert([
             'label' => 'Cinema/Radio/Guardian',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
+        ]);*/
 
         DB::table('media')->insert([
             'label' => 'Internet search',
@@ -84,11 +84,11 @@ class MediaTableSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
-        DB::table('media')->insert([
+        /*DB::table('media')->insert([
             'label' => 'Cinema/Guardian/Press/Conversant/Facebook',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
+        ]);*/
 
     }
 }

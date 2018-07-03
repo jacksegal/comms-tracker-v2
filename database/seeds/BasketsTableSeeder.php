@@ -16,6 +16,7 @@ class BasketsTableSeeder extends Seeder
         /* Energy & Climate Change */
         $basket = new Basket();
         $basket->label = 'Energy & Climate Change';
+        $basket->tag = 'EC';
         $basket->save();
 
         $basket->areas()->saveMany([
@@ -27,12 +28,13 @@ class BasketsTableSeeder extends Seeder
         /* Forests */
         $basket = new Basket();
         $basket->label = 'Forests';
+        $basket->tag = 'FO';
         $basket->save();
 
         $basket->areas()->saveMany([
             new Area(['label' => 'Amazon']),
             new Area(['label' => 'Boreal']),
-            new Area(['label' => 'India']),
+            //new Area(['label' => 'India']),
             new Area(['label' => 'Indonesia']),
         ]);
 
@@ -40,6 +42,7 @@ class BasketsTableSeeder extends Seeder
         /* Greenpeace Organisation */
         $basket = new Basket();
         $basket->label = 'Greenpeace Organisation';
+        $basket->tag = 'GO';
         $basket->save();
 
         $basket->areas()->saveMany([
@@ -53,24 +56,27 @@ class BasketsTableSeeder extends Seeder
         /* No Basket */
         $basket = new Basket();
         $basket->label = 'No Basket';
+        $basket->tag = 'NB';
         $basket->save();
 
         $basket->areas()->saveMany([
-            new Area(['label' => 'Peace']),
+            //new Area(['label' => 'Peace']),
             new Area(['label' => 'Reactive']),
-            new Area(['label' => 'Threats to GP']),
-            new Area(['label' => 'Voting']),
+            //new Area(['label' => 'Threats to GP']),
+            //new Area(['label' => 'Voting']),
         ]);
 
 
         /* Oceans */
         $basket = new Basket();
         $basket->label = 'Oceans';
+        $basket->tag = 'OC';
         $basket->save();
 
         $basket->areas()->saveMany([
             new Area(['label' => 'Fishing']),
-            new Area(['label' => 'Plastics']),
+            //new Area(['label' => 'Plastics']),
+            new Area(['label' => 'Pollution']),
             new Area(['label' => 'Marine Reserves']),
             new Area(['label' => 'Whaling']),
         ]);
@@ -79,18 +85,20 @@ class BasketsTableSeeder extends Seeder
         /* Oil */
         $basket = new Basket();
         $basket->label = 'Oil';
+        $basket->tag = 'OI';
         $basket->save();
 
         $basket->areas()->saveMany([
             new Area(['label' => 'Demand']),
             new Area(['label' => 'Supply']),
-            new Area(['label' => 'Save the Arctic']),
+            //new Area(['label' => 'Save the Arctic']),
         ]);
 
 
         /* Toxics */
         $basket = new Basket();
         $basket->label = 'Toxics';
+        $basket->tag = 'TX';
         $basket->save();
 
         $basket->areas()->saveMany([

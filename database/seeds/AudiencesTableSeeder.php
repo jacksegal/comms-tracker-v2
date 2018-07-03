@@ -21,8 +21,8 @@ class AudiencesTableSeeder extends Seeder
         ]);
 
         DB::table('audiences')->insert([
-            'label' => 'Full list less fewer emails',
-            'tag' => 'full less fewer',
+            'label' => 'Full list plus priority',
+            'tag' => 'full priority',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -98,7 +98,7 @@ class AudiencesTableSeeder extends Seeder
         ]);
 
         DB::table('audiences')->insert([
-            'label' => 'Sunset group',
+            'label' => 'Inactive',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -111,6 +111,12 @@ class AudiencesTableSeeder extends Seeder
 
         DB::table('audiences')->insert([
             'label' => 'Sample',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+
+        DB::table('audiences')->insert([
+            'label' => 'Mop-up',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

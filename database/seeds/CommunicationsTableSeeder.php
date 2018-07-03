@@ -20,6 +20,7 @@ class CommunicationsTableSeeder extends Seeder
             'basket_id' => '1',
             'area_id' => '1',
             'sub_area_id' => '1',
+            'push' => 'my push',
 
             'medium_id' => '1',
             'ask_id' => '1',

@@ -106,6 +106,7 @@ class CommunicationController extends Controller
             'basket' => 'required',
             'area' => 'required',
             'subarea' => 'required',
+            'push' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'user_id' => 'required',
@@ -126,6 +127,7 @@ class CommunicationController extends Controller
         $communication->basket_id = $request->basket;
         $communication->area_id = $request->area;
         $communication->sub_area_id = $request->subarea;
+        $communication->push = $request->push;
 
         $communication->medium_id = $request->medium_id;
         $communication->ask_id = $request->ask_id;
@@ -352,6 +354,7 @@ class CommunicationController extends Controller
             'basket' => 'required',
             'area' => 'required',
             'subarea' => 'required',
+            'push' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'user_id' => 'required',
@@ -370,6 +373,7 @@ class CommunicationController extends Controller
         $communication->basket_id = $request->basket;
         $communication->area_id = $request->area;
         $communication->sub_area_id = $request->subarea;
+        $communication->push = $request->push;
 
         $communication->medium_id = $request->medium_id;
         $communication->ask_id = $request->ask_id;
@@ -484,7 +488,7 @@ class CommunicationController extends Controller
             'audience' => $audiences,
             'recipients' => $communication->approx_recipients,
             'flexibility' => $communication->date_flexibility,
-            'note' => $communication->note,
+            'note' => $communication->notes,
             'tag' => $communication->bsd_tag,
             'url' => env('APP_URL') . '/communications/' . $communication->id,
             'created' => $communication->created_at,

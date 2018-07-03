@@ -232,6 +232,14 @@
                 ],
             ])
 
+            {{-- Push --}}
+            @include('components.form._input-text', [
+               'name' => 'push',
+               'label' => 'Push',
+               'model' => $communication,
+               'type' => 'text',
+            ])
+
             {{-- Description --}}
             @include('components.form._input-textarea', [
                'name' => 'description',
@@ -284,8 +292,61 @@
                 'class' => 'email-only',
             ])
 
-            {{-- Alternative Ask? --}}
+            {{-- Are there two asks in the email? --}}
+            @include('components.form._input-radio', [
+                'name' => 'alt_ask',
+                'label' => 'Are there two asks in the email?',
+                'options' => [
+                    [
+                        'value' => 'No',
+                        'key' => '0',
+                    ],
+                    [
+                        'value' => 'Yes',
+                        'key' => '1',
+                    ],
+                ],
+            ])
 
+            {{-- Is the email a reminder to a previous ask? --}}
+            @include('components.form._input-radio', [
+                'name' => 'reminder',
+                'label' => 'Is the email a reminder to a previous ask?',
+                'options' => [
+                    [
+                        'value' => 'No',
+                        'key' => '0',
+                    ],
+                    [
+                        'value' => 'Reminder 1',
+                        'key' => '1',
+                    ],
+                    [
+                        'value' => 'Reminder 2',
+                        'key' => '2',
+                    ],
+                    [
+                        'value' => 'Reminder 3+',
+                        'key' => '3+',
+                    ],
+                ],
+            ])
+
+            {{-- Is the email going to a sample of your audience only (e.g. for a test)--}}
+            @include('components.form._input-radio', [
+                'name' => 'sample',
+                'label' => 'Is the email going to a sample of your audience only (e.g. for a test)',
+                'options' => [
+                    [
+                        'value' => 'No',
+                        'key' => '0',
+                    ],
+                    [
+                        'value' => 'Yes',
+                        'key' => '1',
+                    ],
+                ],
+            ])
 
             {{-- Notes --}}
             @include('components.form._input-textarea', [

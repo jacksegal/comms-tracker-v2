@@ -22,6 +22,7 @@ class CreateCommunicationsTable extends Migration
             $table->integer('basket_id')->nullable();
             $table->integer('area_id')->nullable();
             $table->integer('sub_area_id')->nullable();
+            $table->string('push')->nullable();
 
             $table->integer('medium_id')->nullable();
             $table->integer('ask_id')->nullable();

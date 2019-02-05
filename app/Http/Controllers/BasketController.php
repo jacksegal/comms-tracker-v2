@@ -14,7 +14,7 @@ class BasketController extends Controller
      */
     public function index()
     {
-        $baskets = Basket::all();
+        $baskets = Basket::where('active', 1)->get();
         return view('basket/index', ['baskets' => $baskets, 'title' => 'Baskets']);
     }
 
@@ -98,6 +98,9 @@ class BasketController extends Controller
      */
     public function destroy(Basket $basket)
     {
-        //
+        $basket->active = 0;
+        $basket->save();
+
+        return redirect()->action('BasketController@index');
     }
 }

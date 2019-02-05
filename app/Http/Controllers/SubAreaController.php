@@ -15,7 +15,7 @@ class SubAreaController extends Controller
      */
     public function index()
     {
-        $subAreas = SubArea::all()->sortBy('label');
+        $subAreas = SubArea::where('active', 1)->get();
 
         return view('subarea/index', ['subAreas' => $subAreas, 'title' => 'Sub-Areas']);
     }
@@ -110,6 +110,9 @@ class SubAreaController extends Controller
      */
     public function destroy(SubArea $subArea)
     {
-        //
+        $subArea->active = 0;
+        $subArea->save();
+
+        return redirect()->action('SubAreaController@index');
     }
 }

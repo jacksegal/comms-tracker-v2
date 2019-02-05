@@ -34,7 +34,7 @@
                     <a class="aux-button" href="/{{ $model }}s/{{$row->id}}/clone">
                         <i class="fa fa-files-o" aria-hidden="true"></i>
                     </a>
-                    <a class="aux-button" class="comms-delete">
+                    <a class="aux-button" class="comms-delete" onclick="deleteComms()">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </a>
                     <form style="display: none;" id="form-comms-delete" method="POST" action="/{{ $model }}s/{{$row->id}}/delete">
@@ -66,10 +66,11 @@
             });
         });
 
-        $( ".comms-delete" ).click(function() {
+        function deleteComms() {
             $( "#form-comms-delete" ).submit();
-        });
-
+        }
 
     </script>
+
+
 @endsection

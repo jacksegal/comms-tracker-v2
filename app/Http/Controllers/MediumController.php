@@ -14,7 +14,7 @@ class MediumController extends Controller
      */
     public function index()
     {
-        $mediums = Medium::all();
+        $mediums = Medium::where('active', 1)->get();
         return view('medium/index', ['mediums' => $mediums, 'title' => 'Mediums']);
     }
 
@@ -96,6 +96,9 @@ class MediumController extends Controller
      */
     public function destroy(Medium $medium)
     {
-        //
+        $medium->active = 0;
+        $medium->save();
+
+        return redirect()->action('MediumController@index');
     }
 }

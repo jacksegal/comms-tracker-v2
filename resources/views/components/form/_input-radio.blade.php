@@ -5,7 +5,15 @@
     @foreach($options as $option)
         <div class="radio">
           <label>
-            <input @if ($loop->first) checked @endif type="radio" name="{{ $name }}" value="{{ $option['key'] }}">
+
+            @if (isset($model->{$name}) && $model->{$name} == $option['key'])
+                <input checked type="radio" name="{{ $name }}" value="{{ $option['key'] }}">
+            @elseif ($loop->first)
+                <input checked type="radio" name="{{ $name }}" value="{{ $option['key'] }}">
+            @else
+                <input type="radio" name="{{ $name }}" value="{{ $option['key'] }}">
+            @endif
+
             {{ $option['value'] }}
           </label>
         </div>

@@ -15,7 +15,7 @@ class AreaController extends Controller
      */
     public function index()
     {
-        $areas = Area::all()->sortBy('label');
+        $areas = Area::where('active', 1)->get();
 
         return view('area/index', ['areas' => $areas, 'title' => 'Areas']);
     }
@@ -110,6 +110,9 @@ class AreaController extends Controller
      */
     public function destroy(Area $area)
     {
-        //
+        $area->active = 0;
+        $area->save();
+
+        return redirect()->action('AreaController@index');
     }
 }

@@ -14,7 +14,7 @@ class AskController extends Controller
      */
     public function index()
     {
-        $asks = Ask::all();
+        $asks = Ask::where('active', 1)->get();
         return view('ask/index', ['asks' => $asks, 'title' => 'Asks']);
     }
 
@@ -102,6 +102,9 @@ class AskController extends Controller
      */
     public function destroy(Ask $ask)
     {
-        //
+        $ask->active = 0;
+        $ask->save();
+
+        return redirect()->action('AskController@index');
     }
 }

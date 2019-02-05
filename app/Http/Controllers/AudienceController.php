@@ -14,7 +14,7 @@ class AudienceController extends Controller
      */
     public function index()
     {
-        $audiences = Audience::all();
+        $audiences = Audience::where('active', 1)->get();
         return view('audience/index', ['audiences' => $audiences, 'title' => 'Audiences']);
     }
 
@@ -98,6 +98,9 @@ class AudienceController extends Controller
      */
     public function destroy(Audience $audience)
     {
-        //
+        $audience->active = 0;
+        $audience->save();
+
+        return redirect()->action('AudienceController@index');
     }
 }

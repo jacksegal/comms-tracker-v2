@@ -35,6 +35,10 @@ class CreateCommunicationsTable extends Migration
             $table->integer('data_selection')->nullable();
             $table->text('notes')->nullable();
 
+            $table->integer('alt_ask')->nullable();
+            $table->integer('reminder')->nullable();
+            $table->integer('sample')->nullable();
+
             $table->string('bsd_tag')->nullable();
 
             $table->integer('trello_card_id')->nullable();

@@ -116,7 +116,7 @@
             {{-- Title --}}
             @include('components.form._input-text', [
                 'name' => 'title',
-                'label' => 'Title',
+                'label' => 'Title*',
                 'model' => $communication,
                 'type' => 'text',
                 'required' => 'required',
@@ -125,7 +125,7 @@
             {{-- Medium --}}
             @include('components.form._input-select-one', [
                 'name' => 'medium_id',
-                'label' => 'Medium',
+                'label' => 'Medium*',
                 'options' => [
                     'collection' => $mediums,
                     'key' => 'id',
@@ -143,7 +143,7 @@
             @include('components.form._input-date', [
                'name' => 'start_date',
                'value' => isset($communication->start_date) ? $communication->getStartDate() : '',
-               'label' => 'Start Date',
+               'label' => 'Start Date*',
                'model' => $communication,
             ])
 
@@ -160,7 +160,7 @@
 
             {{-- Date Flexibility --}}
             <div class="form-group {{ $errors->has('date_flexibility') ? ' has-error' : '' }}">
-                <label for="input-date_flexibility">Date Flexibility</label>
+                <label for="input-date_flexibility">Date Flexibility*</label>
                 <select class="form-control" name="date_flexibility" id="input-date_flexibility">
                     <option {{ (isset($communication->date_flexibility) && $communication->date_flexibility == 'Very flexible') ? 'selected' : '' }} value="Very flexible">
                         Very flexible
@@ -184,7 +184,7 @@
             {{-- Basket --}}
             @include('components.form._input-select-one', [
                 'name' => 'basket',
-                'label' => 'Basket',
+                'label' => 'Basket*',
                 'options' => [
                     'collection' => $baskets,
                     'key' => 'id',
@@ -201,7 +201,7 @@
             {{-- Area --}}
             @include('components.form._input-select-one', [
                 'name' => 'area',
-                'label' => 'Area',
+                'label' => 'Area*',
                 'options' => [
                     'collection' => $areas,
                     'key' => 'id',
@@ -243,7 +243,7 @@
             {{-- Description --}}
             @include('components.form._input-textarea', [
                'name' => 'description',
-               'label' => 'Description',
+               'label' => 'Description*',
                'model' => $communication,
             ])
 
@@ -251,7 +251,7 @@
             {{-- Audience --}}
             @include('components.form._input-select-many', [
                 'name' => 'audiences',
-                'label' => 'Audience',
+                'label' => 'Audience*',
                 'options' => [
                     'collection' => $audiences,
                     'key' => 'id',
@@ -268,7 +268,7 @@
             {{-- Approx Recipients --}}
             @include('components.form._input-text', [
                'name' => 'approx_recipients',
-               'label' => 'Approx. Recipients',
+               'label' => 'Approx. Recipients*',
                'model' => $communication,
                'type' => 'text',
             ])
@@ -277,7 +277,7 @@
             {{-- Ask --}}
             @include('components.form._input-select-one', [
                 'name' => 'ask_id',
-                'label' => 'Ask',
+                'label' => 'Ask*',
                 'options' => [
                     'collection' => $asks,
                     'key' => 'id',
@@ -306,6 +306,7 @@
                         'key' => '1',
                     ],
                 ],
+                'model' => $communication,
             ])
 
             {{-- Is the email a reminder to a previous ask? --}}
@@ -327,9 +328,10 @@
                     ],
                     [
                         'value' => 'Reminder 3+',
-                        'key' => '3+',
+                        'key' => '3',
                     ],
                 ],
+                'model' => $communication,
             ])
 
             {{-- Is the email going to a sample of your audience only (e.g. for a test)--}}
@@ -346,6 +348,7 @@
                         'key' => '1',
                     ],
                 ],
+                'model' => $communication,
             ])
 
             {{-- Notes --}}

@@ -57,8 +57,8 @@ class CommunicationController extends Controller
             $q->orderBy('label', 'asc');
         }])->get();
 
-        $initialAreas = Area::all();
-        $initialsubAreas = SubArea::all();
+        $initialAreas = Area::where('active', 1)->get();
+        $initialsubAreas = SubArea::where('active', 1)->get();
 
         //$initialAreas = $baskets->first()->areas->sortBy('label');
         //$initialsubAreas = $initialAreas->first()->subAreas->sortBy('label');
@@ -66,10 +66,10 @@ class CommunicationController extends Controller
         $areasByBasket = $baskets->groupBy('label');
         $subAreasByArea = $areas->groupBy('label');
 
-        $asks = Ask::all();
-        $audiences = Audience::all();
-        $mediums = Medium::all();
-        $users = User::all();
+        $asks = Ask::where('active', 1)->get();
+        $audiences = Audience::where('active', 1)->get();
+        $mediums = Medium::where('active', 1)->get();
+        $users = User::where('active', 1)->get();
 
         return view('communication/create', [
             'communication' => '',
@@ -106,7 +106,8 @@ class CommunicationController extends Controller
             'basket' => 'required',
             'area' => 'required',
             'subarea' => 'required',
-            'push' => 'required',
+            //'push' => 'required',
+            'audiences' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'user_id' => 'required',
@@ -135,6 +136,10 @@ class CommunicationController extends Controller
         $communication->start_date = $request->start_date;
         $communication->end_date = $request->end_date;
         $communication->date_flexibility = $request->date_flexibility;
+
+        $communication->alt_ask = $request->alt_ask;
+        $communication->reminder = $request->reminder;
+        $communication->sample = $request->sample;
 
         $communication->approx_recipients = $request->approx_recipients;
         $communication->data_selection = $request->data_selection;
@@ -263,9 +268,9 @@ class CommunicationController extends Controller
         $areasByBasket = $baskets->groupBy('label');
         $subAreasByArea = $areas->groupBy('label');
 
-        $asks = Ask::all();
-        $audiences = Audience::all();
-        $mediums = Medium::all();
+        $asks = Ask::where('active', 1)->get();
+        $audiences = Audience::where('active', 1)->get();
+        $mediums = Medium::where('active', 1)->get();
         $users = User::all();
 
         $communication->user_id = auth()->user()->id;
@@ -307,16 +312,25 @@ class CommunicationController extends Controller
             $q->orderBy('label', 'asc');
         }])->get();
 
-        $initialAreas = $communication->basket->areas->sortBy('label');
-        $initialsubAreas = $communication->area->subAreas->sortBy('label');
+        if(isset($communication->basket)){
+            $initialAreas = $communication->basket->areas->sortBy('label');
+        } else {
+            $initialAreas = Area::where('active', 1)->get();
+        }
+
+        if(isset($communication->area)){
+            $initialsubAreas = $communication->area->subAreas->sortBy('label');
+        } else {
+            $initialsubAreas = SubArea::where('active', 1)->get();  
+        }
 
         $areasByBasket = $baskets->groupBy('label');
         $subAreasByArea = $areas->groupBy('label');
 
-        $asks = Ask::all();
-        $audiences = Audience::all();
-        $mediums = Medium::all();
-        $users = User::all();
+        $asks = Ask::where('active', 1)->get();
+        $audiences = Audience::where('active', 1)->get();
+        $mediums = Medium::where('active', 1)->get();
+        $users = User::where('active', 1)->get();
 
 
         return view('communication/edit', [
@@ -334,7 +348,7 @@ class CommunicationController extends Controller
             'mediums' => $mediums,
             'users' => $users,
 
-            'title' => 'EditA Communication',
+            'title' => 'Edit A Communication',
         ]);
 
     }
@@ -381,6 +395,10 @@ class CommunicationController extends Controller
         $communication->start_date = $request->start_date;
         $communication->end_date = $request->end_date;
         $communication->date_flexibility = $request->date_flexibility;
+
+        $communication->alt_ask = $request->alt_ask;
+        $communication->reminder = $request->reminder;
+        $communication->sample = $request->sample;
 
         $communication->approx_recipients = $request->approx_recipients;
         $communication->data_selection = $request->data_selection;
@@ -488,6 +506,9 @@ class CommunicationController extends Controller
             'audience' => $audiences,
             'recipients' => $communication->approx_recipients,
             'flexibility' => $communication->date_flexibility,
+            'alt_ask' => $communication->alt_ask,
+            'reminder' => $communication->reminder,
+            'sample' => $communication->sample,
             'note' => $communication->notes,
             'tag' => $communication->bsd_tag,
             'url' => env('APP_URL') . '/communications/' . $communication->id,
@@ -504,6 +525,9 @@ class CommunicationController extends Controller
             'audience' => 'xxx',
             'recipients' => $communication->approx_recipients,
             'flexibility' => $communication->date_flexibility,
+            'alt_ask' => $communication->alt_ask,
+            'reminder' => $communication->reminder,
+            'sample' => $communication->sample,
             'note' => $communication->note,
             'tag' => $communication->bsd_tag,
             'url' => env('APP_URL') . '/communications/' . $communication->id,

@@ -34,7 +34,6 @@ class BasketsTableSeeder extends Seeder
         $basket->areas()->saveMany([
             new Area(['label' => 'Amazon']),
             new Area(['label' => 'Boreal']),
-            //new Area(['label' => 'India']),
             new Area(['label' => 'Indonesia']),
         ]);
 
@@ -60,10 +59,7 @@ class BasketsTableSeeder extends Seeder
         $basket->save();
 
         $basket->areas()->saveMany([
-            //new Area(['label' => 'Peace']),
             new Area(['label' => 'Reactive']),
-            //new Area(['label' => 'Threats to GP']),
-            //new Area(['label' => 'Voting']),
         ]);
 
 
@@ -75,7 +71,6 @@ class BasketsTableSeeder extends Seeder
 
         $basket->areas()->saveMany([
             new Area(['label' => 'Fishing']),
-            //new Area(['label' => 'Plastics']),
             new Area(['label' => 'Pollution']),
             new Area(['label' => 'Marine Reserves']),
             new Area(['label' => 'Whaling']),
@@ -91,7 +86,6 @@ class BasketsTableSeeder extends Seeder
         $basket->areas()->saveMany([
             new Area(['label' => 'Demand']),
             new Area(['label' => 'Supply']),
-            //new Area(['label' => 'Save the Arctic']),
         ]);
 
 

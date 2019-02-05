@@ -25,9 +25,14 @@
 
                 @endforeach
                 <td>
-                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    <!--<i class="fa fa-eye" aria-hidden="true"></i>-->
                     <a class="aux-button" href="/{{ $model }}s/{{$row->id}}/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    <a class="aux-button" class="comms-delete" onclick="deleteComms()">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </a>
+                    <form style="display: none;" id="form-comms-delete" method="POST" action="/{{ $model }}s/{{$row->id}}/delete">
+                        {{ csrf_field() }}
+                    </form>
                 </td>
             </tr>
         @endforeach
@@ -42,7 +47,12 @@
         $(document).ready(function () {
             $('{{ '#' . $model . '_table' }}').DataTable({
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            });
+            });            
         });
+
+        function deleteComms() {
+            $( "#form-comms-delete" ).submit();
+        }
+
     </script>
 @endsection

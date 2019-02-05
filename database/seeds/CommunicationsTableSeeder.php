@@ -33,6 +33,10 @@ class CommunicationsTableSeeder extends Seeder
             'data_selection' => '0',
             'notes' => 'Some notes on this communication',
 
+            'alt_ask' => '1',
+            'reminder' => '2',
+            'sample' => '1',
+
             //bsd_tag
 
             'user_id' => 1,

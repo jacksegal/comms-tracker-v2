@@ -28,6 +28,21 @@
 
 ---
 
+**alt_ask?**
+{{ $alt_ask }}
+
+---
+
+**reminder?**
+{{ $reminder }}
+
+---
+
+**sample?**
+{{ $sample }}
+
+---
+
 **Anything else to note?**
 {{ $note }}
 

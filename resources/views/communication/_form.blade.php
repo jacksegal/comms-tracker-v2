@@ -263,6 +263,7 @@
                     'value' => 'id',
                 ],
                 'class' => 'email-only',
+                'tooltip' => 'You can select more than one – the logic is AND, e.g. signers AND geographic',
             ])
 
             {{-- Approx Recipients --}}
@@ -290,12 +291,13 @@
                     'placeholder' => 'Select an Ask',
                 ],
                 'class' => 'email-only',
+                'tooltip' => 'What is the main ask in your email (if there are several asks please select the main or first one)',
             ])
 
             {{-- Are there two asks in the email? --}}
             @include('components.form._input-radio', [
                 'name' => 'alt_ask',
-                'label' => 'Are there two asks in the email?',
+                'label' => 'Is there more than one ask in the email, e.g. Share or Donate?',
                 'options' => [
                     [
                         'value' => 'No',
@@ -335,7 +337,7 @@
             ])
 
             {{-- Is the email going to a sample of your audience only (e.g. for a test)--}}
-            @include('components.form._input-radio', [
+            {{-- @include('components.form._input-radio', [
                 'name' => 'sample',
                 'label' => 'Is the email going to a sample of your audience only (e.g. for a test)',
                 'options' => [
@@ -349,7 +351,7 @@
                     ],
                 ],
                 'model' => $communication,
-            ])
+            ])--}}
 
             {{-- Notes --}}
             @include('components.form._input-textarea', [
@@ -402,3 +404,10 @@
     </div>
 
 </div>
+
+
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })    
+</script>

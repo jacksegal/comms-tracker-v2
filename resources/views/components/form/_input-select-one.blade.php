@@ -1,5 +1,10 @@
 <div class="form-group {{ $errors->has($name) ? ' has-error' : '' }}  {{ isset($class) ? $class : null }}">
-    <label for="input-{{$name}}">{{ $label }}</label>
+    <label for="input-{{$name}}">
+        {{ $label }}
+        @if(isset($tooltip))
+            <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{{$tooltip}}"></i>
+        @endif
+    </label>
 
     <select class="form-control" name="{{$name}}" id="input-{{$name}}">
 

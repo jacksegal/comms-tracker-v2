@@ -235,9 +235,10 @@
             {{-- Push --}}
             @include('components.form._input-text', [
                'name' => 'push',
-               'label' => 'Push',
+               'label' => 'Push*',
                'model' => $communication,
                'type' => 'text',
+               'required' => 'required',
             ])
 
             {{-- Description --}}
@@ -262,7 +263,7 @@
                     'key' => 'id',
                     'value' => 'id',
                 ],
-                'class' => 'email-only',
+                //'class' => 'email-only',
                 'tooltip' => 'You can select more than one – the logic is AND, e.g. signers AND geographic',
             ])
 
@@ -290,7 +291,7 @@
                     'value' => 'id',
                     'placeholder' => 'Select an Ask',
                 ],
-                'class' => 'email-only',
+                //'class' => 'email-only',
                 'tooltip' => 'What is the main ask in your email (if there are several asks please select the main or first one)',
             ])
 

@@ -43,14 +43,14 @@
                 center: 'title', // current view title
                 right: 'Filters year,month,week,day' // buttons for switching between views
             },
-            /*customButtons: {
+            customButtons: {
                 Filters: {
-                    text: 'Filters',
+                    text: '+',
                     click: function () {
-                        return false;
+                        window.location.replace("/communications/create");
                     }
                 }
-            },*/
+            },
             views: {
                 year: {
                     yearColumns: 3

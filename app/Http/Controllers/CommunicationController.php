@@ -107,16 +107,12 @@ class CommunicationController extends Controller
             'area' => 'required',
             'subarea' => 'required',
             'ask_id' => 'required',
-            //'push' => 'required',
+            'audiences' => 'required',
+            'push' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'user_id' => 'required',
         ];
-
-        /* additional validation rules for email */
-        if($request->medium_id == '1') {
-            $validationRules['audiences'] = 'required';
-        }
 
         $request->validate($validationRules);
 
@@ -158,6 +154,10 @@ class CommunicationController extends Controller
             'ask' => isset($communication->ask->tag) ? $communication->ask->tag : $communication->ask->label,
         ];
 
+        if( $bsdTag['subArea'] == 'NA' ) {
+            $bsdTag['subArea'] = '';
+        }
+
         foreach ($communication->audiences as $audience) {
             if(isset($audience->tag)){
                 $bsdTag['audience'][] = $audience->tag;
@@ -191,24 +191,32 @@ class CommunicationController extends Controller
             ));      
         }  
 
-        $trello = new \App\ServicesComms\Trello();
-        $html = $this->createTrelloDescription($communication);
-        $res = $trello->createCard($communication->basket->label . ' - ' . $communication->title, $html, $communication->start_date);
+        if($request->medium_id == '1') {
+            
+            $trello = new \App\ServicesComms\Trello();
+            $html = $this->createTrelloDescription($communication);
+            $res = $trello->createCard($communication->basket->label . ' - ' . $communication->title, $html, $communication->start_date);
 
-        if($res['code'] == 200) {
+            if($res['code'] == 200) {
 
-            $trelloCard = new \App\TrelloCard(['card_id' => $res['body']->id]);
-            $trelloResponse = $trelloCard->save();
+                $trelloCard = new \App\TrelloCard(['card_id' => $res['body']->id]);
+                $trelloResponse = $trelloCard->save();
 
-            $communication->trello_card_id = $trelloCard->id;
-            $communication->save();
+                $communication->trello_card_id = $trelloCard->id;
+                $communication->save();
 
-            return redirect()->action('CommunicationController@index');    
+                return redirect()->action('CommunicationController@index');    
+            } else {
+
+                $errorMsg = 'There was an error adding the card to Trello: ' . $res['body'];
+                return redirect()->action('CommunicationController@index')->withErrors($errorMsg);
+            }
+
         } else {
-
-            $errorMsg = 'There was an error adding the card to Trello: ' . $res['body'];
-            return redirect()->action('CommunicationController@index')->withErrors($errorMsg);
+            return redirect()->action('CommunicationController@index');    
         }
+
+
 
         
     }
@@ -368,17 +376,13 @@ class CommunicationController extends Controller
             'basket' => 'required',
             'area' => 'required',
             'subarea' => 'required',
-            'push' => 'required',
             'ask_id' => 'required',
+            'audiences' => 'required',
+            'push' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'user_id' => 'required',
         ];
-
-        /* additional validation rules for email */
-        if($request->medium_id == '1') {
-            $validationRules['audiences'] = 'required';
-        }
 
         $request->validate($validationRules);
 
@@ -418,6 +422,10 @@ class CommunicationController extends Controller
             'ask' => isset($communication->ask->tag) ? $communication->ask->tag : $communication->ask->label,
         ];
 
+        if( $bsdTag['subArea'] == 'NA' ) {
+            $bsdTag['subArea'] = '';
+        }
+    
         foreach ($communication->audiences as $audience) {
             if(isset($audience->tag)){
                 $bsdTag['audience'][] = $audience->tag;

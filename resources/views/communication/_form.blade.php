@@ -309,6 +309,7 @@
                     ],
                 ],
                 'model' => $communication,
+                'class' => 'email-only',
             ])
 
             {{-- Is the email a reminder to a previous ask? --}}
@@ -334,6 +335,7 @@
                     ],
                 ],
                 'model' => $communication,
+                'class' => 'email-only',
             ])
 
             {{-- Is the email going to a sample of your audience only (e.g. for a test)--}}

@@ -33,6 +33,14 @@ class Communication extends Model
     }
 
     /**
+     * Get the campaign push for the communication.
+     */
+    public function campaignPush()
+    {
+        return $this->belongsTo('App\CampaignPush');
+    }
+
+    /**
      * Get the medium for the communication.
      */
     public function medium()

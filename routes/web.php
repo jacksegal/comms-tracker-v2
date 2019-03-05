@@ -64,6 +64,16 @@ Route::post('/subareas/{subArea}', 'SubAreaController@update')->middleware('perm
 Route::post('/subareas/{subArea}/delete', 'SubAreaController@destroy')->middleware('permission:manageModels');
 Route::get('/subareas/{subArea}/edit', 'SubAreaController@edit')->middleware('permission:manageModels');
 
+
+/* CampaignPushes */
+Route::get('/campaignpushs', 'CampaignPushController@index')->middleware('permission:manageModels');
+Route::post('/campaignpushes', 'CampaignPushController@store')->middleware('permission:manageModels');
+Route::get('/campaignpushs/create', 'CampaignPushController@create')->middleware('permission:manageModels');
+Route::get('/campaignpushs/{campaignPush}', 'CampaignPushController@show')->middleware('permission:manageModels');
+Route::post('/campaignpushs/{campaignPush}', 'CampaignPushController@update')->middleware('permission:manageModels');
+Route::post('/campaignpushs/{campaignPush}/delete', 'CampaignPushController@destroy')->middleware('permission:manageModels');
+Route::get('/campaignpushs/{campaignPush}/edit', 'CampaignPushController@edit')->middleware('permission:manageModels');
+
 /* Mediums */
 Route::get('/mediums', 'MediumController@index')->middleware('permission:manageModels');
 Route::post('/mediums', 'MediumController@store')->middleware('permission:manageModels');

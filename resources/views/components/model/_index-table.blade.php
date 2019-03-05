@@ -27,10 +27,10 @@
                 <td>
                     <!--<i class="fa fa-eye" aria-hidden="true"></i>-->
                     <a class="aux-button" href="/{{ $model }}s/{{$row->id}}/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    <a class="aux-button" class="comms-delete" onclick="deleteComms()">
+                    <a class="aux-button" class="comms-delete" onclick="deleteComms({{$row->id}})">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </a>
-                    <form style="display: none;" id="form-comms-delete" method="POST" action="/{{ $model }}s/{{$row->id}}/delete">
+                    <form style="display: none;" id="form-comms-delete-{{$row->id}}" method="POST" action="/{{ $model }}s/{{$row->id}}/delete">
                         {{ csrf_field() }}
                     </form>
                 </td>
@@ -50,8 +50,8 @@
             });            
         });
 
-        function deleteComms() {
-            $( "#form-comms-delete" ).submit();
+        function deleteComms(rowId) {
+            $( "#form-comms-delete-"+rowId ).submit();
         }
 
     </script>

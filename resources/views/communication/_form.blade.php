@@ -4,9 +4,10 @@
         /* create JS objects */
         var areasByBasket = {!! $areasByBasket !!};
         var subAreasByArea = {!! $subAreasByArea !!};
+        var pushesBysubArea = {!! $pushesBysubArea !!};
 
-        console.log('areasByBasket', areasByBasket);
-        console.log('subAreasByArea', subAreasByArea);
+        //console.log('areasByBasket', areasByBasket);
+        //console.log('subAreasByArea', subAreasByArea);
 
         /* listen to basket select change */
         $('select[name="basket"]').change(function () {
@@ -23,6 +24,14 @@
             var myArr = subAreasByArea[selected][0].sub_areas;
             updateSelectOptions('select[name="subarea"]', myArr);
             $('select[name="subarea"]').val('').trigger('change.select2');
+        });
+
+        /* listen to subArea select change */
+        $('select[name="subarea"]').change(function () {
+            var selected = getSelectedOption(this);
+            var myArr = pushesBysubArea[selected][0].campaign_pushes;
+            updateSelectOptions('select[name="campaignpush"]', myArr);
+            $('select[name="campaignpush"]').val('').trigger('change.select2');
         });
 
 
@@ -232,14 +241,31 @@
                 ],
             ])
 
+            {{-- Campaign Push --}}
+            @include('components.form._input-select-one', [
+                'name' => 'campaignpush',
+                'label' => 'Push',
+                'options' => [
+                    'collection' => $pushes,
+                    'key' => 'id',
+                    'value' => 'label',
+                ],
+                'selected' => [
+                    'collection' => isset($communication) ? $communication : false,
+                    'key' => 'campaign_push_id',
+                    'value' => 'id',
+                    'placeholder' => 'Select a Push',
+                ],
+            ])
+
             {{-- Push --}}
-            @include('components.form._input-text', [
+            {{--@include('components.form._input-text', [
                'name' => 'push',
                'label' => 'Push*',
                'model' => $communication,
                'type' => 'text',
                'required' => 'required',
-            ])
+            ])--}}
 
             {{-- Description --}}
             @include('components.form._input-textarea', [

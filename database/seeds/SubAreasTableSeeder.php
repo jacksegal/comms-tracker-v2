@@ -43,22 +43,22 @@ class SubAreasTableSeeder extends Seeder
 
         $area = Area::where(['label' => 'Fundraising'])->first();
         $area->subAreas()->saveMany([
-            new SubArea(['label' => 'N/A', 'tag' => 'NA']),
+            //new SubArea(['label' => 'N/A', 'tag' => 'NA']),
         ]);
 
         $area = Area::where(['label' => 'Mobilisation'])->first();
         $area->subAreas()->saveMany([
-            new SubArea(['label' => 'N/A', 'tag' => 'NA']),
+            //new SubArea(['label' => 'N/A', 'tag' => 'NA']),
         ]);
 
         $area = Area::where(['label' => 'Outreach'])->first();
         $area->subAreas()->saveMany([
-            new SubArea(['label' => 'N/A', 'tag' => 'NA']),
+            //new SubArea(['label' => 'N/A', 'tag' => 'NA']),
         ]);
 
         $area = Area::where(['label' => 'VR'])->first();
         $area->subAreas()->saveMany([
-            new SubArea(['label' => 'N/A', 'tag' => 'NA']),
+            //new SubArea(['label' => 'N/A', 'tag' => 'NA']),
         ]);
 
         $area = Area::where(['label' => 'Reactive'])->first();
@@ -86,7 +86,7 @@ class SubAreasTableSeeder extends Seeder
 
         $area = Area::where(['label' => 'Whaling'])->first();
         $area->subAreas()->saveMany([
-            new SubArea(['label' => 'N/A', 'tag' => 'NA']),
+            //new SubArea(['label' => 'N/A', 'tag' => 'NA']),
         ]);
 
         $area = Area::where(['label' => 'Demand'])->first();
@@ -103,7 +103,7 @@ class SubAreasTableSeeder extends Seeder
 
         $area = Area::where(['label' => 'Detox'])->first();
         $area->subAreas()->saveMany([
-            new SubArea(['label' => 'N/A', 'tag' => 'NA']),
+            //new SubArea(['label' => 'N/A', 'tag' => 'NA']),
         ]);
 
     }

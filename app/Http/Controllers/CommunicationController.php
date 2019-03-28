@@ -6,6 +6,7 @@ use App\Communication;
 use App\Basket;
 use App\Area;
 use App\SubArea;
+use App\CampaignPush;
 use App\Ask;
 use App\Audience;
 use App\Medium;
@@ -57,14 +58,17 @@ class CommunicationController extends Controller
             $q->orderBy('label', 'asc');
         }])->get();
 
+        $subAreas = SubArea::with(['campaignPushes' => function ($q) {
+            $q->orderBy('label', 'asc');
+        }])->get();
+
         $initialAreas = Area::where('active', 1)->get();
         $initialsubAreas = SubArea::where('active', 1)->get();
-
-        //$initialAreas = $baskets->first()->areas->sortBy('label');
-        //$initialsubAreas = $initialAreas->first()->subAreas->sortBy('label');
+        $initialPushes = CampaignPush::where('active', 1)->get();
 
         $areasByBasket = $baskets->groupBy('label');
         $subAreasByArea = $areas->groupBy('label');
+        $pushesBysubArea = $subAreas->groupBy('label');
 
         $asks = Ask::where('active', 1)->get();
         $audiences = Audience::where('active', 1)->get();
@@ -77,9 +81,11 @@ class CommunicationController extends Controller
             'baskets' => $baskets,
             'areas' => $initialAreas,
             'subAreas' => $initialsubAreas,
+            'pushes' => $initialPushes,
 
             'areasByBasket' => $areasByBasket,
             'subAreasByArea' => $subAreasByArea,
+            'pushesBysubArea' => $pushesBysubArea,
 
             'asks' => $asks,
             'audiences' => $audiences,
@@ -98,82 +104,9 @@ class CommunicationController extends Controller
      */
     public function store(Request $request)
     {
-
-        /* core validation rules for all medium */
-        $validationRules = [
-            'title' => 'required|unique:communications|max:255',
-            'description' => 'required',
-            'basket' => 'required',
-            'area' => 'required',
-            'subarea' => 'required',
-            'ask_id' => 'required',
-            'audiences' => 'required',
-            'push' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
-            'user_id' => 'required',
-        ];
-
-        $request->validate($validationRules);
-
+        $this->validateCommunication(false, $request);
         $communication = new Communication();
-
-        $communication->title = $request->title;
-        $communication->description = $request->description;
-
-        $communication->basket_id = $request->basket;
-        $communication->area_id = $request->area;
-        $communication->sub_area_id = $request->subarea;
-        $communication->push = $request->push;
-
-        $communication->medium_id = $request->medium_id;
-        $communication->ask_id = $request->ask_id;
-
-        $communication->start_date = $request->start_date;
-        $communication->end_date = $request->end_date;
-        $communication->date_flexibility = $request->date_flexibility;
-
-        $communication->alt_ask = $request->alt_ask;
-        $communication->reminder = $request->reminder;
-        $communication->sample = $request->sample;
-
-        $communication->approx_recipients = $request->approx_recipients;
-        $communication->data_selection = $request->data_selection;
-        $communication->notes = $request->notes;
-
-        $communication->user_id = $request->user_id;
-
-        $communication->save();
-
-        $communication->audiences()->sync($request->audiences);
-
-        $bsdTag = [
-            'basket' => isset($communication->basket->tag) ? $communication->basket->tag : $communication->basket->label,
-            'area' => isset($communication->area->tag) ? $communication->area->tag : $communication->area->label,
-            'subArea' => isset($communication->subArea->tag) ? $communication->subArea->tag : $communication->subArea->label,
-            'ask' => isset($communication->ask->tag) ? $communication->ask->tag : $communication->ask->label,
-        ];
-
-        if( $bsdTag['subArea'] == 'NA' ) {
-            $bsdTag['subArea'] = '';
-        }
-
-        foreach ($communication->audiences as $audience) {
-            if(isset($audience->tag)){
-                $bsdTag['audience'][] = $audience->tag;
-            } else {
-                $bsdTag['audience'][] = $audience->label;
-            }
-        }
-
-
-        $communication->bsd_tag = "{$bsdTag['basket']},{$bsdTag['area']},{$bsdTag['subArea']},{$bsdTag['ask']}";
-
-        foreach ($bsdTag['audience'] as $audience) {
-            $communication->bsd_tag .= ',' . $audience;
-        }
-
-        $communication->save();
+        $this->saveCommunication($communication, $request);
 
         if($communication->data_selection == 1){
             // send email
@@ -215,9 +148,6 @@ class CommunicationController extends Controller
         } else {
             return redirect()->action('CommunicationController@index');    
         }
-
-
-
         
     }
 
@@ -320,6 +250,10 @@ class CommunicationController extends Controller
             $q->orderBy('label', 'asc');
         }])->get();
 
+        $subAreas = SubArea::with(['campaignPushes' => function ($q) {
+            $q->orderBy('label', 'asc');
+        }])->get();
+
         if(isset($communication->basket)){
             $initialAreas = $communication->basket->areas->sortBy('label');
         } else {
@@ -332,8 +266,16 @@ class CommunicationController extends Controller
             $initialsubAreas = SubArea::where('active', 1)->get();  
         }
 
+        if(isset($communication->subArea)){
+            $initialPushes = $communication->subArea->campaignPushes->sortBy('label');
+        } else {
+            $initialPushes = CampaignPush::where('active', 1)->get();  
+        }
+
+
         $areasByBasket = $baskets->groupBy('label');
         $subAreasByArea = $areas->groupBy('label');
+        $pushesBysubArea = $subAreas->groupBy('label');
 
         $asks = Ask::where('active', 1)->get();
         $audiences = Audience::where('active', 1)->get();
@@ -347,9 +289,11 @@ class CommunicationController extends Controller
             'baskets' => $baskets,
             'areas' => $initialAreas,
             'subAreas' => $initialsubAreas,
+            'pushes' => $initialPushes,
 
             'areasByBasket' => $areasByBasket,
             'subAreasByArea' => $subAreasByArea,
+            'pushesBysubArea' => $pushesBysubArea,
 
             'asks' => $asks,
             'audiences' => $audiences,
@@ -370,82 +314,8 @@ class CommunicationController extends Controller
      */
     public function update(Request $request, Communication $communication)
     {
-        $validationRules = [
-            'title' => 'required|unique:communications,title,' . $communication->id . '|max:255',
-            'description' => 'required',
-            'basket' => 'required',
-            'area' => 'required',
-            'subarea' => 'required',
-            'ask_id' => 'required',
-            'audiences' => 'required',
-            'push' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
-            'user_id' => 'required',
-        ];
-
-        $request->validate($validationRules);
-
-        $communication->title = $request->title;
-        $communication->description = $request->description;
-
-        $communication->basket_id = $request->basket;
-        $communication->area_id = $request->area;
-        $communication->sub_area_id = $request->subarea;
-        $communication->push = $request->push;
-
-        $communication->medium_id = $request->medium_id;
-        $communication->ask_id = $request->ask_id;
-
-        $communication->start_date = $request->start_date;
-        $communication->end_date = $request->end_date;
-        $communication->date_flexibility = $request->date_flexibility;
-
-        $communication->alt_ask = $request->alt_ask;
-        $communication->reminder = $request->reminder;
-        $communication->sample = $request->sample;
-
-        $communication->approx_recipients = $request->approx_recipients;
-        $communication->data_selection = $request->data_selection;
-        $communication->notes = $request->notes;
-
-        // trello_id
-        $communication->user_id = $request->user_id;
-        // active
-
-        $communication->audiences()->sync($request->audiences);
-
-        $bsdTag = [
-            'basket' => isset($communication->basket->tag) ? $communication->basket->tag : $communication->basket->label,
-            'area' => isset($communication->area->tag) ? $communication->area->tag : $communication->area->label,
-            'subArea' => isset($communication->subArea->tag) ? $communication->subArea->tag : $communication->subArea->label,
-            'ask' => isset($communication->ask->tag) ? $communication->ask->tag : $communication->ask->label,
-        ];
-
-        if( $bsdTag['subArea'] == 'NA' ) {
-            $bsdTag['subArea'] = '';
-        }
-    
-        foreach ($communication->audiences as $audience) {
-            if(isset($audience->tag)){
-                $bsdTag['audience'][] = $audience->tag;
-            } else {
-                $bsdTag['audience'][] = $audience->label;
-            }
-        }
-
-        $communication->bsd_tag = "{$bsdTag['basket']},{$bsdTag['area']},{$bsdTag['subArea']},{$bsdTag['ask']}";
-
-        foreach ($bsdTag['audience'] as $audience) {
-            $communication->bsd_tag .= ',' . $audience;
-        }
-
-        /*$communication->bsd_tag = "{$communication->basket->label},{$communication->area->label},{$communication->subArea->label},{$communication->ask->label}";
-        foreach ($communication->audiences as $audience) {
-            $communication->bsd_tag .= ',' . $audience->label;
-        }*/
-
-        $communication->save();
+        $this->validateCommunication($communication, $request);
+        $this->saveCommunication($communication, $request);
 
         if (isset($communication->trello_card_id)) {
             $trello = new \App\ServicesComms\Trello();
@@ -491,8 +361,128 @@ class CommunicationController extends Controller
 
     public function trello(Request $request)
     {
-
         return 'hello world';
+    }
+
+
+    private function validateCommunication($communication = false, $request)
+    {
+        // core validation
+        $validationRules = [
+            'description' => 'required',
+            'basket' => 'required',
+            'area' => 'required',
+            //'subarea' => 'required',
+            //'campaignpush' => 'required',
+            'ask_id' => 'required',
+            'audiences' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'user_id' => 'required',
+        ];  
+
+        // if update, exclude id from unique search
+        if(isset($communication->id)) {
+            $validationRules['title'] = 'required|unique:communications,title,' . $communication->id . '|max:255';
+        } else {
+            $validationRules['title'] = 'required|unique:communications|max:255';
+        }
+
+        // run core validation
+        $request->validate($validationRules);
+
+        // if store, build Communication for additional validation
+        if(!isset($communication->id)) {
+            $communication = new Communication();
+            $communication->area_id = $request->area;
+        }
+
+        // additional validation
+        if(isset($communication->area->subAreas[0])) {
+            $validationRules['subarea'] = 'required';
+
+            if(isset($communication->subArea->campaignPushes[0])) {
+                $validationRules['campaignpush'] = 'required';
+            } 
+        }
+
+        //additional validation
+        $request->validate($validationRules);
+    }
+
+
+    private function saveCommunication($communication, $request) 
+    {
+        $communication->title = $request->title;
+        $communication->description = $request->description;
+
+        $communication->basket_id = $request->basket;
+        $communication->area_id = $request->area;
+        $communication->sub_area_id = $request->subarea;
+        $communication->campaign_push_id = $request->campaignpush;
+
+        $communication->medium_id = $request->medium_id;
+        $communication->ask_id = $request->ask_id;
+
+        $communication->start_date = $request->start_date;
+        $communication->end_date = $request->end_date;
+        $communication->date_flexibility = $request->date_flexibility;
+
+        $communication->alt_ask = $request->alt_ask;
+        $communication->reminder = $request->reminder;
+        $communication->sample = $request->sample;
+
+        $communication->approx_recipients = $request->approx_recipients;
+        $communication->data_selection = $request->data_selection;
+        $communication->notes = $request->notes;
+
+        $communication->user_id = $request->user_id;
+
+        // save communication - has to be before audience sync for store()
+        $communication->save();
+
+        // sync audiences - has to be after save() for store()
+        $communication->audiences()->sync($request->audiences);
+
+        // Build tag Array for mandatory fields (check if tag is label or specified value)
+        $bsdTag = [
+            'basket' => isset($communication->basket->tag) ? $communication->basket->tag : $communication->basket->label,
+            'area' => isset($communication->area->tag) ? $communication->area->tag : $communication->area->label,
+            //'subArea' => isset($communication->subArea->tag) ? $communication->subArea->tag : $communication->subArea->label,
+            'ask' => isset($communication->ask->tag) ? $communication->ask->tag : $communication->ask->label,
+        ];
+
+        // Add subArea to tag Array (optional field)
+        if(isset($communication->subArea)) {
+            $bsdTag['subArea'] = isset($communication->subArea->tag) ? $communication->subArea->tag : $communication->subArea->label;
+        } else {
+            $bsdTag['subArea'] = '';
+        }
+
+        // old catch for when we used "N/A" as fix for subAreas without areas
+        if( $bsdTag['subArea'] == 'NA' ) {
+            $bsdTag['subArea'] = '';
+        }
+
+        // loop through audiences and add to Array
+        foreach ($communication->audiences as $audience) {
+            if(isset($audience->tag)){
+                $bsdTag['audience'][] = $audience->tag;
+            } else {
+                $bsdTag['audience'][] = $audience->label;
+            }
+        }
+
+        // build tag String
+        $communication->bsd_tag = "{$bsdTag['basket']},{$bsdTag['area']},{$bsdTag['subArea']},{$bsdTag['ask']}";
+
+        // loop through audience and add to tag String
+        foreach ($bsdTag['audience'] as $audience) {
+            $communication->bsd_tag .= ',' . $audience;
+        }
+
+        // finally save communication!
+        return $communication->save();
     }
 
     private function createTrelloDescription($communication)
@@ -515,9 +505,6 @@ class CommunicationController extends Controller
             'audience' => $audiences,
             'recipients' => $communication->approx_recipients,
             'flexibility' => $communication->date_flexibility,
-            //'alt_ask' => $communication->alt_ask,
-            //'reminder' => $communication->reminder,
-            //'sample' => $communication->sample,
             'note' => $communication->notes,
             'tag' => $communication->bsd_tag,
             'url' => env('APP_URL') . '/communications/' . $communication->id,
@@ -531,7 +518,7 @@ class CommunicationController extends Controller
         return view('email', [
             'email' => $communication->user->email,
             'ask' => $communication->ask->label,
-            'audience' => 'xxx',
+            'audience' => '{{audiences}}',
             'recipients' => $communication->approx_recipients,
             'flexibility' => $communication->date_flexibility,
             //'alt_ask' => $communication->alt_ask,

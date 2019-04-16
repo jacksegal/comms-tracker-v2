@@ -32,17 +32,17 @@
 <br><hr><br>
 
 <strong>alt_ask?</strong>
-<p>{{ $alt_ask }}</p>
+<p>$alt_ask</p>
 
 <br><hr><br>
 
 <strong>reminder?</strong>
-<p>{{ $reminder }}</p>
+<p>$reminder</p>
 
 <br><hr><br>
 
 <strong>sample?</strong>
-<p>{{ $sample }}</p>
+<p>$sample</p>
 
 <br><hr><br>
 

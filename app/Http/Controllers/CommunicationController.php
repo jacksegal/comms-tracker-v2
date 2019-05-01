@@ -164,7 +164,8 @@ class CommunicationController extends Controller
             ['key' => 'Description','value' => $communication->description],
             ['key' => 'Basket','value' => $communication->basket->label],
             ['key' => 'Area','value' => $communication->area->label],
-            ['key' => 'Sub Area','value' => $communication->subArea->label],
+            ['key' => 'Sub Area','value' => isset($communication->subArea) ? $communication->subArea->label : null],
+            ['key' => 'Push','value' => isset($communication->campaignPush) ? $communication->campaignPush->label : null],
             ['key' => 'Medium','value' => $communication->medium->label],
             ['key' => 'Ask','value' => $communication->ask->label],
             ['key' => 'Start Date','value' => $communication->start_date],
@@ -200,16 +201,38 @@ class CommunicationController extends Controller
             $q->orderBy('label', 'asc');
         }])->get();
 
-        $initialAreas = $communication->basket->areas->sortBy('label');
-        $initialsubAreas = $communication->area->subAreas->sortBy('label');
+        $subAreas = SubArea::with(['campaignPushes' => function ($q) {
+            $q->orderBy('label', 'asc');
+        }])->get();
+
+        //$initialAreas = $communication->basket->areas->sortBy('label');
+        //$initialsubAreas = $communication->area->subAreas->sortBy('label');
+        if(isset($communication->basket)){
+            $initialAreas = $communication->basket->areas->sortBy('label');
+        } else {
+            $initialAreas = Area::where('active', 1)->get();
+        }
+
+        if(isset($communication->area)){
+            $initialsubAreas = $communication->area->subAreas->sortBy('label');
+        } else {
+            $initialsubAreas = SubArea::where('active', 1)->get();  
+        }
+
+        if(isset($communication->subArea)){
+            $initialPushes = $communication->subArea->campaignPushes->sortBy('label');
+        } else {
+            $initialPushes = CampaignPush::where('active', 1)->get();  
+        }
 
         $areasByBasket = $baskets->groupBy('label');
         $subAreasByArea = $areas->groupBy('label');
+        $pushesBysubArea = $subAreas->groupBy('label');
 
         $asks = Ask::where('active', 1)->get();
         $audiences = Audience::where('active', 1)->get();
         $mediums = Medium::where('active', 1)->get();
-        $users = User::all();
+        $users = User::where('active', 1)->get();
 
         $communication->user_id = auth()->user()->id;
         $communication->title = $communication->title . ' - COPY - ' . time();
@@ -220,9 +243,11 @@ class CommunicationController extends Controller
             'baskets' => $baskets,
             'areas' => $initialAreas,
             'subAreas' => $initialsubAreas,
+            'pushes' => $initialPushes,
 
             'areasByBasket' => $areasByBasket,
             'subAreasByArea' => $subAreasByArea,
+            'pushesBysubArea' => $pushesBysubArea,
 
             'asks' => $asks,
             'audiences' => $audiences,

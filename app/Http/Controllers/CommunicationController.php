@@ -540,16 +540,26 @@ class CommunicationController extends Controller
 
     private function createDataEmail($communication)
     {
+
+        $i = 2;
+
+        foreach ($communication->audiences as $audience) {
+            if($i === 2){
+                $audiences = $audience->label;
+                $i++;
+            } else {
+                $audiences .= ', ' . $audience->label;
+            }    
+        }
+
         return view('email', [
             'email' => $communication->user->email,
+            'description' => $communication->description,
             'ask' => $communication->ask->label,
-            'audience' => '{{audiences}}',
+            'audience' => $audiences,
             'recipients' => $communication->approx_recipients,
             'flexibility' => $communication->date_flexibility,
-            //'alt_ask' => $communication->alt_ask,
-            //'reminder' => $communication->reminder,
-            //'sample' => $communication->sample,
-            'note' => $communication->note,
+            'note' => $communication->notes,
             'tag' => $communication->bsd_tag,
             'url' => env('APP_URL') . '/communications/' . $communication->id,
             'created' => $communication->created_at,

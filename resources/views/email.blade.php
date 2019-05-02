@@ -31,21 +31,6 @@
 
 <br><hr><br>
 
-<strong>alt_ask?</strong>
-<p>$alt_ask</p>
-
-<br><hr><br>
-
-<strong>reminder?</strong>
-<p>$reminder</p>
-
-<br><hr><br>
-
-<strong>sample?</strong>
-<p>$sample</p>
-
-<br><hr><br>
-
 <strong>BSD Tag</strong>
 <p>{{ $tag }}</p>
 

@@ -41,7 +41,17 @@ class UsersTableSeeder extends Seeder
         ]);
 
 
+        DB::table('users')->insert([
+            'email' => 'molly.brooks@greenpeace.org',
+            'role_id' => '1',
+            'active' => '1',
+            'remember_token' => str_random(10),
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
 
+
+        /*
         DB::table('users')->insert([
             'email' => 'grainne.callan@greenpeace.org',
             'role_id' => '1',
@@ -96,16 +106,7 @@ class UsersTableSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
-        DB::table('users')->insert([
-            'email' => 'molly.brooks@greenpeace.org',
-            'role_id' => '1',
-            'active' => '1',
-            'remember_token' => str_random(10),
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-
-
+    
 
 
         DB::table('users')->insert([
@@ -368,6 +369,8 @@ class UsersTableSeeder extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 
-        ]);        
+        ]);     
+
+        */   
     }
 }

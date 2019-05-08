@@ -112,5 +112,15 @@ class SubAreasTableSeeder extends Seeder
             new SubArea(['label' => 'Global']),
         ]);
 
+        $area = Area::where(['label' => 'Climate'])->first();
+        $area->subAreas()->saveMany([
+            new SubArea(['label' => 'Climate Emergency']),
+        ]);
+
+        $area = Area::where(['label' => 'Global'])->first();
+        $area->subAreas()->saveMany([
+            new SubArea(['label' => 'Commodities']),
+        ]);
+
     }
 }

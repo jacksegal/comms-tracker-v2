@@ -99,5 +99,11 @@ class BasketsTableSeeder extends Seeder
             new Area(['label' => 'Detox']),
         ]);
 
+
+        $basket = Basket::where(['label' => 'Forests'])->first();
+        $basket->areas()->saveMany([
+            new Area(['label' => 'Global']),
+        ]);
+
     }
 }

@@ -103,6 +103,18 @@ class CampaignPushesTableSeeder extends Seeder
         $subArea->campaignPushes()->saveMany([
             new CampaignPush(['label' => 'Protect the oceans - Apr 2019']),
         ]);
+
+
+        $subArea = SubArea::where(['label' => 'Climate Emergency'])->first();
+        $subArea->campaignPushes()->saveMany([
+            new CampaignPush(['label' => 'Climate Emergency - 2019']),
+        ]);
+
+
+        $subArea = SubArea::where(['label' => 'Commodities'])->first();
+        $subArea->campaignPushes()->saveMany([
+            new CampaignPush(['label' => 'Cross commodities - May 2019']),
+        ]);
                
     }
 }

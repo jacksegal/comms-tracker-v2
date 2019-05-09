@@ -95,6 +95,35 @@ class Trello
         } 
     }
 
+    public function updateCardDueDate($id, $due)
+    {
+        try { 
+            $dt = new Carbon($due);
+
+            $res = $this->client->put($this->auth['baseUrl'] . 'cards/' . $id, [
+                'query' => [
+                    'due' => $dt->toIso8601String(),
+                    'key' => $this->auth['key'],
+                    'token' => $this->auth['token'],
+                ]
+            ]);
+
+            $result['code'] = $res->getStatusCode();
+            $result['body'] = $this->returnBody($res);
+
+            return $result;
+            
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+
+            $response = $e->getResponse();
+
+            $result['code'] = $response->getStatusCode();
+            $result['body'] = $response->getBody()->getContents();
+
+            return $result;        
+        }          
+    }
+
     public function updateCard($id, $name, $desc, $due)
     {
         try { 

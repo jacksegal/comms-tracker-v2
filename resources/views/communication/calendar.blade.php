@@ -21,6 +21,7 @@
             events: [
                     @foreach($communications as $communication)
                 {
+                    communication_id: '{{ $communication->id }}',
                     url: '/communications/{{  $communication->id }}/edit',
                     title: '{{ $communication->title }}',
                     start: '{{ $communication->start_date }}',
@@ -75,6 +76,31 @@
             firstDay: 1,
             allDayDefault: true,
             contentHeight: "auto",
+            editable: true,     
+            eventDrop: function(event, delta, revertFunc) {
+                //console.log(event.start.format('YYYY-MM-DD'));
+                
+                $.ajax({
+                  type: "POST",
+                  url: "{{ env('APP_URL') }}/calendar/update",
+                  data: {
+                    id: event.communication_id,
+                    start_date: event.start.format('YYYY-MM-DD'),
+                  },
+                });                
+            },
+            eventResize: function(event, delta, revertFunc) {
+                //console.log(event.end.format('YYYY-MM-DD'));
+
+                $.ajax({
+                  type: "POST",
+                  url: "{{ env('APP_URL') }}/calendar/update",
+                  data: {
+                    id: event.communication_id,
+                    end_date: event.end.format('YYYY-MM-DD'),
+                  },
+                }); 
+            }          
         })
     </script>
 

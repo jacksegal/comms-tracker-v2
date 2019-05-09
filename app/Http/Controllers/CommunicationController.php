@@ -44,6 +44,30 @@ class CommunicationController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function calendarUpdate(Request $request)
+    {
+        $comm = Communication::findOrFail($request->id);
+
+        if(isset($request->start_date)){
+            $comm->start_date = $request->start_date;
+        }
+
+        if(isset($request->end_date)){
+            $comm->end_date = $request->end_date;
+        }
+        
+        $result = $comm->save();
+
+        return response()->json([
+            'status' => 'sucess',
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

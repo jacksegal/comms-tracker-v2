@@ -111,6 +111,10 @@ Route::get('/communications/{communication}/edit', 'CommunicationController@edit
 Route::get('/communications/{communication}/clone', 'CommunicationController@replicate')->middleware('permission:manageCommunications');
 
 
+/* Calendar API */
+Route::post('/calendar/update', 'CommunicationController@calendarUpdate');
+
+
 /* Socialite */
 Route::get('login/google', 'Auth\LoginController@redirectToProvider');
 Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');

@@ -5,6 +5,10 @@
         body {
             background-color: white !important;
         }
+
+        .tooltip {
+            position: fixed;
+        }
     </style>
 
     <div class="container">
@@ -36,8 +40,7 @@
             ],
             eventRender: function (event, element) {
                 $(element).attr('data-toggle', 'tooltip')
-                        .attr('title', event.description)
-                        .attr('data-delay', '{ "show": 400, "hide": 10 }');
+                        .attr('title', event.description);
             },
             header: {
                 left: 'prev,next today', // buttons for navigating
@@ -106,7 +109,7 @@
 
     <script>
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip();
         })
     </script>
 @endsection

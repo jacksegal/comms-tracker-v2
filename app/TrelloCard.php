@@ -12,4 +12,13 @@ class TrelloCard extends Model
      * @var array
      */
     protected $fillable = ['card_id'];
+
+
+    /**
+     * Get the communication that the trello card belongs to.
+     */
+    public function communication()
+    {
+    	return $this->hasOne('App\Communication');
+    }
 }

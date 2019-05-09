@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -115,3 +114,8 @@ Route::get('/communications/{communication}/clone', 'CommunicationController@rep
 /* Socialite */
 Route::get('login/google', 'Auth\LoginController@redirectToProvider');
 Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
+
+
+/* Trello */
+Route::post('/trello/webhook', 'TrelloController@update');
+Route::get('/trello/webhook', 'TrelloController@index');

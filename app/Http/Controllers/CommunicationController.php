@@ -138,6 +138,8 @@ class CommunicationController extends Controller
                 $communication->trello_card_id = $trelloCard->id;
                 $communication->save();
 
+                $trello->createWebhook($trelloCard->card_id);
+
                 return redirect()->action('CommunicationController@index');    
             } else {
 

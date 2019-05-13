@@ -79,7 +79,8 @@
             firstDay: 1,
             allDayDefault: true,
             contentHeight: "auto",
-            editable: true,     
+            //editable: true,     
+            eventStartEditable: true,
             eventDrop: function(event, delta, revertFunc) {
                 //console.log(event.start.format('YYYY-MM-DD'));
                 

@@ -3,7 +3,7 @@
 @section('model-content')
 
     @include('campaignpush._form', [
-        'route' => '/campainpushes/'.$campaignPush->id,
+        'route' => '/campaignpushs/'.$campaignPush->id,
         'buttonLabel' => 'Update Push',
     ])
 

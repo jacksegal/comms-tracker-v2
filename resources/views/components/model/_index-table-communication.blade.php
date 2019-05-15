@@ -62,7 +62,8 @@
                 dom: 'lBfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
+                ],
+                "order": [[ 1, "desc" ]]
             });
         });
 

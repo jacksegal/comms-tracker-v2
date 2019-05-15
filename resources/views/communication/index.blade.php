@@ -7,6 +7,7 @@
         'model' => 'communication',
         'columns' => [
             ['header' => 'Title','row' => 'title'],
+            ['header' => 'Start Date','row' => 'start_date'],
             ['header' => 'Basket','nested' => true, 'row1' => 'basket', 'row2' => 'label'],
             ['header' => 'Area','nested' => true, 'row1' => 'area', 'row2' => 'label'],
             ['header' => 'Sub-Area','nested' => true, 'row1' => 'subArea', 'row2' => 'label'],

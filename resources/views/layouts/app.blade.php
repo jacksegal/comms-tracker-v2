@@ -84,7 +84,7 @@
 
                     @else
                         @if(Auth::user()->hasPermission('manageCommunications'))
-                        <li><a href="/">Home</a></li>
+                        <li><a href="/">Calendar</a></li>
                         @endif
 
                         @if(Auth::user()->hasPermission('manageCommunications'))

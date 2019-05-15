@@ -513,6 +513,13 @@ class CommunicationController extends Controller
             $bsdTag['subArea'] = '';
         }
 
+        // Add subArea to tag Array (optional field)
+        if(isset($communication->subArea)) {
+            $bsdTag['campaignPush'] = isset($communication->campaignPush->tag) ? $communication->campaignPush->tag : $communication->campaignPush->label;
+        } else {
+            $bsdTag['campaignPush'] = '';
+        }
+
         // old catch for when we used "N/A" as fix for subAreas without areas
         if( $bsdTag['subArea'] == 'NA' ) {
             $bsdTag['subArea'] = '';
@@ -528,7 +535,7 @@ class CommunicationController extends Controller
         }
 
         // build tag String
-        $communication->bsd_tag = "{$bsdTag['basket']},{$bsdTag['area']},{$bsdTag['subArea']},{$bsdTag['ask']}";
+        $communication->bsd_tag = "{$bsdTag['basket']},{$bsdTag['area']},{$bsdTag['subArea']},{$bsdTag['campaignPush']},{$bsdTag['ask']}";
 
         // loop through audience and add to tag String
         foreach ($bsdTag['audience'] as $audience) {

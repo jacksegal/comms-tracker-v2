@@ -513,8 +513,8 @@ class CommunicationController extends Controller
             $bsdTag['subArea'] = '';
         }
 
-        // Add subArea to tag Array (optional field)
-        if(isset($communication->subArea)) {
+        // Add campaignPush to tag Array (optional field)
+        if(isset($communication->campaignPush)) {
             $bsdTag['campaignPush'] = isset($communication->campaignPush->tag) ? $communication->campaignPush->tag : $communication->campaignPush->label;
         } else {
             $bsdTag['campaignPush'] = '';

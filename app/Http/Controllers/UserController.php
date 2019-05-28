@@ -27,7 +27,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        // hack to show standard user by default
+        $roles = Role::orderBy('id', 'DESC')->get();
 
         return view('user/create', ['user' => '', 'roles' => $roles, 'title' => 'Create User']);
     }

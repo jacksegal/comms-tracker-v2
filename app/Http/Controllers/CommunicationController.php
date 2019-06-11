@@ -167,7 +167,7 @@ class CommunicationController extends Controller
 
                 $trello->createWebhook($trelloCard->card_id);
 
-                return redirect()->action('CommunicationController@index');    
+                return redirect()->action('CommunicationController@calendar');    
             } else {
 
                 $errorMsg = 'There was an error adding the card to Trello: ' . $res['body'];
@@ -175,7 +175,7 @@ class CommunicationController extends Controller
             }
 
         } else {
-            return redirect()->action('CommunicationController@index');    
+            return redirect()->action('CommunicationController@calendar');    
         }
         
     }

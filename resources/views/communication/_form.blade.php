@@ -426,7 +426,7 @@
 
             @include('components.form._button_group', [
                 'label' => $buttonLabel,
-                'cancel' => '/communications',
+                'cancel' => '/',
             ])
 
         </form>

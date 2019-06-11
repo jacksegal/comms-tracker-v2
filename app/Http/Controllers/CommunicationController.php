@@ -52,8 +52,9 @@ class CommunicationController extends Controller
     {
         $comm = Communication::findOrFail($request->id);
 
-        if(isset($request->start_date) && isset($comm->trelloCard)){
-            $comm->start_date = $request->start_date;
+        $comm->start_date = $request->start_date;
+
+        if(isset($comm->trelloCard)){
 
             $trello = new \App\ServicesComms\Trello();
             $res = $trello->updateCardDueDate($comm->trelloCard->card_id, $request->start_date);

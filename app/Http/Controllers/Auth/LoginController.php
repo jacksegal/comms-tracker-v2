@@ -71,7 +71,7 @@ class LoginController extends Controller
         } else {
             return redirect('login')
                 ->withInput()
-                ->withErrors(array('message' => 'Google oAuth failed - please check there is an active user with that email'));
+                ->withErrors(array('message' => 'Google oAuth failed - please check there is an active user for: ' . $googleUser->email));
         }
     }
 }

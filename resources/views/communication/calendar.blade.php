@@ -29,7 +29,7 @@
                     url: '/communications/{{  $communication->id }}/edit',
                     title: '{{ $communication->title }}',
                     start: '{{ $communication->start_date }}',
-                    description: '{{ $communication->title }}: {{ $communication->description }}',
+                    description: @json($communication->description),
                     color: '{{ $communication->ask->color_font }}',
                     backgroundColor: '{{ $communication->ask->color_background }}',
                     @if($communication->end_date)
